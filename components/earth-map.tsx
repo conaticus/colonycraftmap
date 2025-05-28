@@ -523,7 +523,6 @@ export default function EarthMap() {
         bounds={dims.bounds}
         keepBuffer={8}
         detectRetina
-        updateWhenIdle
         noWrap
         tms
       />
