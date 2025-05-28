@@ -511,12 +511,19 @@ export default function EarthMap() {
       crs={L.CRS.Simple}
       bounds={dims.bounds}
       maxBounds={dims.bounds}
+      zoomSnap={1}
+      zoomDelta={1}
+      wheelPxPerZoomLevel={120}
+      preferCanvas
     >
       <TileLayer
         attribution='Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, Generated using <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a>'
-        url="/tiles/{z}/{x}/{y}.png"
+        url={`${process.env.NEXT_PUBLIC_TILE_URL}?v=${process.env.NEXT_PUBLIC_TILE_VERSION}`}
         errorTileUrl={TRANSPARENT_TILE_BASE64}
         bounds={dims.bounds}
+        keepBuffer={8}
+        detectRetina
+        updateWhenIdle
         noWrap
         tms
       />
