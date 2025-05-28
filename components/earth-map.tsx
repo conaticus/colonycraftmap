@@ -58,7 +58,7 @@ const MAP_CONFIG = {
 } as const;
 
 const TRANSPARENT_TILE_BASE64 =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNgYGAAAAAEAAH2FzhVAAAAAElFTkSuQmCC=";
 
 function calculateMapDimensions() {
   const effectiveWidth =
@@ -503,7 +503,7 @@ export default function EarthMap() {
 
   return (
     <MapContainer
-      className="size-full min-h-screen w-screen [&>*]:!font-sans bg-background"
+      className="size-full min-h-screen w-screen [&>*]:!font-sans"
       center={dims.center}
       zoom={3}
       minZoom={0}
