@@ -88,16 +88,9 @@ function MarkerPopup(props: {
     <Popup>
       <div className="flex flex-col gap-1 tabular-nums">
         <div className="flex justify-between items-center gap-1">
-          <span className="w-1/3 font-semibold">Minecraft</span>
+          <span className="w-1/3 font-semibold">Coordinates</span>
           <span className="text-right text-xs text-muted-foreground">
             X {marker.minecraft.x}, Z {marker.minecraft.z}
-          </span>
-        </div>
-        <div className="flex justify-between items-center gap-1">
-          <span className="w-1/3 font-semibold">Map</span>
-          <span className="text-right text-xs text-muted-foreground">
-            Lat {marker.leaflet.lat.toFixed(3)}, Lng{" "}
-            {marker.leaflet.lng.toFixed(3)}
           </span>
         </div>
         {isUrlMarker && (
@@ -111,7 +104,7 @@ function MarkerPopup(props: {
           variant="outline"
           size="icon"
           onClick={handleShare}
-          title="Share marker minecraft coordinates as URL"
+          title="Share marker coordinates as URL"
         >
           <Share2Icon className="size-3.5" />
         </Button>
@@ -119,7 +112,7 @@ function MarkerPopup(props: {
           variant="outline"
           size="icon"
           onClick={handleCopyCoords}
-          title="Copy minecraft coordinates"
+          title="Copy coordinates"
         >
           <CopyIcon className="size-3.5" />
         </Button>

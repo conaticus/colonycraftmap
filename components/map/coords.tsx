@@ -182,14 +182,9 @@ function CoordinatesDisplay({ config }: { config: CoordinateConfig }) {
   });
 
   return (
-    <div className="text-sm flex flex-col p-2">
-      <span>
-        X {coords.minecraft.x}, Z {coords.minecraft.z}
-      </span>
-      <span className="italic text-muted-foreground">
-        Lat {coords.leaflet.lat.toFixed(3)}, Lng {coords.leaflet.lng.toFixed(3)}
-      </span>
-    </div>
+    <span className="text-sm p-2 font-medium">
+      X {coords.minecraft.x}, Z {coords.minecraft.z}
+    </span>
   );
 }
 
