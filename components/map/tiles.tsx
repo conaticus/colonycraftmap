@@ -16,7 +16,7 @@ export function CustomTileLayer({
   dims: ReturnType<typeof calculateMapDimensions>;
 }) {
   const attribution =
-    'Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, Tiles generated using <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a>';
+    'Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth Map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, Tiles generated using <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a>';
 
   return (
     <TileLayer
