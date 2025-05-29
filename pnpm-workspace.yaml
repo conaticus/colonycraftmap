@@ -1,5 +1,4 @@
-ignoredBuiltDependencies:
-  - esbuild
 onlyBuiltDependencies:
   - '@biomejs/biome'
+  - '@tailwindcss/oxide'
   - sharp

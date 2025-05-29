@@ -19,8 +19,9 @@
     "next": "15.3.2",
     "next-themes": "^0.4.6",
     "react": "^19.1.0",
-    "react-dom": "^19.0.0",
+    "react-dom": "^19.1.0",
     "react-leaflet": "5.0.0-rc.2",
+    "react-leaflet-custom-control": "github:chris-m92/react-leaflet-custom-control#026cf86",
     "sharp": "^0.34.2",
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.3.0"
