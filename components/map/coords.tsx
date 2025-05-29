@@ -73,9 +73,9 @@ function CoordinatesInput({
 
     const max =
       id === "x"
-        ? MAP_CONFIG.IMAGE_WIDTH
+        ? MAP_CONFIG.IMAGE_WIDTH / 2
         : id === "z"
-          ? MAP_CONFIG.IMAGE_HEIGHT
+          ? MAP_CONFIG.IMAGE_HEIGHT / 2
           : Number.POSITIVE_INFINITY;
 
     if (
@@ -94,8 +94,8 @@ function CoordinatesInput({
     if (
       !Number.isNaN(x) &&
       !Number.isNaN(z) &&
-      Math.abs(x) <= MAP_CONFIG.IMAGE_WIDTH &&
-      Math.abs(z) <= MAP_CONFIG.IMAGE_HEIGHT
+      Math.abs(x) <= MAP_CONFIG.IMAGE_WIDTH / 2 &&
+      Math.abs(z) <= MAP_CONFIG.IMAGE_HEIGHT / 2
     ) {
       const lf = convertMinecraftToLeaflet(x, z, createCoordinateConfig());
 
