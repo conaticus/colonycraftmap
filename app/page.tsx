@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const DynamicEarthMap = dynamic(() => import("@/components/earth-map"), {
+const DynamicEarthMap = dynamic(() => import("@/components/map/index"), {
   ssr: false,
 });
 
