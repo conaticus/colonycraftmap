@@ -129,9 +129,12 @@
   .leaflet-bar,
   .leaflet-control-zoom-in,
   .leaflet-control-zoom-out,
-  .leaflet-control,
-  .leaflet-container {
+  .leaflet-control {
     @apply !bg-background !text-foreground;
+  }
+
+  .leaflet-container {
+    @apply !bg-[#0f0f0f];
   }
 
   .leaflet-control-zoom-in {

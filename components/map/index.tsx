@@ -72,38 +72,40 @@ export default function EarthMap() {
     useMarkers();
 
   return (
-    <MapContainer
-      className="size-full min-h-screen w-screen [&>*]:!font-sans relative"
-      center={dims.center}
-      zoom={3}
-      minZoom={0}
-      maxZoom={MAP_CONFIG.MAX_ZOOM}
-      crs={L.CRS.Simple}
-      bounds={dims.bounds}
-      maxBounds={dims.bounds}
-      zoomSnap={1}
-      zoomDelta={1}
-      wheelPxPerZoomLevel={120}
-      preferCanvas
-    >
-      <CustomTileLayer
-        url={tileUrl("earth")}
-        dims={dims}
-        withAttribution
-      />
-      <Coordinates
-        config={config}
-        addMarker={addMarker}
-      />
-      <OreLayers dims={dims} />
-      <MapClickHandler
-        config={config}
-        onAddMarker={addMarker}
-      />
-      <MarkerLayer
-        config={config}
-        {...{ markers, addMarker, removeMarker, moveMarker, saveMarkers }}
-      />
-    </MapContainer>
+    <div className="fixed size-full">
+      <MapContainer
+        className="size-full [&>*]:!font-sans relative"
+        center={dims.center}
+        zoom={3}
+        minZoom={0}
+        maxZoom={MAP_CONFIG.MAX_ZOOM}
+        crs={L.CRS.Simple}
+        bounds={dims.bounds}
+        maxBounds={dims.bounds}
+        zoomSnap={1}
+        zoomDelta={1}
+        wheelPxPerZoomLevel={120}
+        preferCanvas
+      >
+        <CustomTileLayer
+          url={tileUrl("earth")}
+          dims={dims}
+          withAttribution
+        />
+        <Coordinates
+          config={config}
+          addMarker={addMarker}
+        />
+        <OreLayers dims={dims} />
+        <MapClickHandler
+          config={config}
+          onAddMarker={addMarker}
+        />
+        <MarkerLayer
+          config={config}
+          {...{ markers, addMarker, removeMarker, moveMarker, saveMarkers }}
+        />
+      </MapContainer>
+    </div>
   );
 }
