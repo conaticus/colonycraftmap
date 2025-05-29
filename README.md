@@ -1,4 +1,4 @@
-# Colony Craft map
+# Map of Colony Craft
 
 A web-based map viewer designed for the Colony Craft Minecraft server. Provides features such as adding and managing markers on the map, viewing coordinates in both Minecraft and map formats, and sharing specific locations with others.
 
