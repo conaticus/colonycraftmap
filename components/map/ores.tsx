@@ -41,9 +41,11 @@ export function OreLayers({
     <LayersControl position="topright">
       {ORES.map((ore) => (
         <LayersControl.Overlay
-          name={ore.id
+          name={`<div style="display:inline-flex;align-items:center;justify-content:between;gap:5px;width:100px;"><span style="width:100%;">${ore.id
             .replace(/_/g, " ")
-            .replace(/(?:^|\s)\S/g, (a) => a.toUpperCase())}
+            .replace(/(?:^|\s)\S/g, (a) =>
+              a.toUpperCase()
+            )}</span>${ore.id !== "all_ores" ? `<span style="width:10px;height:10px;background-color:${ore.color};border-radius:50%;border:1px solid var(--border);" />` : ""}</div>`}
           checked={checkedLayers[ore.id]}
           key={ore.id}
         >
