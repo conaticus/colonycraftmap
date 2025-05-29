@@ -15,7 +15,7 @@ const monoFont = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Colony Craft map",
+  title: "Map of Colony Craft",
   description:
     "Web-based map viewer for the Colony Craft minecraft server. It allows players to view and interact with the world in a web browser.",
 };
