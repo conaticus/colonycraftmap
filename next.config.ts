@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "ETag",
-            value: 'W/"tiles-v2"',
+            value: `W/"tiles-v${process.env.NEXT_PUBLIC_TILE_VERSION}"`,
           },
         ],
       },
