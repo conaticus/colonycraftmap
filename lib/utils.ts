@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function tileUrl(type: string) {
   return decodeURI(
     new URL(
-      `/tiles/${type}/{z}/{x}/{y}.png?v=${process.env.NEXT_PUBLIC_TILE_VERSION}`,
+      `/tiles/${type}/{z}/{x}/{y}.webp?v=${process.env.NEXT_PUBLIC_TILE_VERSION}`,
       process.env.NEXT_PUBLIC_URL
     ).href
   );
