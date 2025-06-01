@@ -19,9 +19,10 @@ export interface Markers {
     config: CoordinateConfig
   ) => void;
   saveMarkers: () => void;
+  setMarkers: (markers: MarkerData[]) => void;
 }
 
-export function useMarkers() {
+export function useMarkers(): Markers {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   useEffect(() => {

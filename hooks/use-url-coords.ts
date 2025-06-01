@@ -9,7 +9,7 @@ import {
 } from "@/components/map/coords";
 import type { MarkerData } from "@/components/map/marker";
 
-export function useUrlCoordinates(config: CoordinateConfig) {
+export function useUrlCoordinates(config: CoordinateConfig): MarkerData | null {
   const searchParams = useSearchParams();
   const map = useMap();
   const [urlMarker, setUrlMarker] = useState<MarkerData | null>(null);
