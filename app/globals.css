@@ -1,7 +1,10 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@plugin "@tailwindcss/typography";
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -113,15 +116,23 @@
     @apply !rounded-md;
   }
 
-  .leaflet-control {
-    @apply !rounded-tl-sm;
-  }
-
   .leaflet-control-attribution > a {
     @apply !text-emerald-400;
   }
 
   .leaflet-popup-content {
     @apply !mx-0 !mb-0 !mt-4 !w-full;
+  }
+
+  ::-webkit-scrollbar {
+    @apply size-2.5;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border border-[2px] border-transparent border-solid bg-clip-padding;
   }
 }
