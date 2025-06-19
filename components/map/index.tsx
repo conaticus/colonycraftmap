@@ -16,6 +16,7 @@ import { Coordinates, createCoordinateConfig } from "./coords";
 import { MapClickHandler, MarkerLayer } from "./marker";
 import { CustomTileLayer } from "./tiles";
 import { OreLayers } from "./ores";
+import { Usage } from "./usage";
 
 // fix for default markers in react-leaflet
 L.Icon.Default.mergeOptions({
@@ -92,6 +93,7 @@ export default function EarthMap() {
           dims={dims}
           withAttribution
         />
+        <Usage />
         <Coordinates
           config={config}
           addMarker={addMarker}
