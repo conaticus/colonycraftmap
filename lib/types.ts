@@ -4,4 +4,8 @@ export interface CoordinateConfig {
   blocksPerLeafletUnit: number;
 }
 
+export interface Settings {
+  showMarkerNames: boolean;
+}
+
 export type Colony = [[number, number], [number, number]];
