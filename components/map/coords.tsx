@@ -17,10 +17,12 @@ import { MAP_CONFIG } from "@/constants/map";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
+import type { MarkerData } from "./marker";
+
 function CoordinatesInput({
   addMarker,
 }: {
-  addMarker: ReturnType<typeof useMarkers>["addMarker"];
+  addMarker: (leaflet: MarkerData["leaflet"]) => void;
 }) {
   const map = useMap();
 
@@ -57,11 +59,7 @@ function CoordinatesInput({
     ) {
       const lf = convertMinecraftToLeaflet(x, z);
 
-      addMarker({
-        id: Date.now(),
-        minecraft: { x, z },
-        leaflet: lf,
-      });
+      addMarker(lf);
 
       map.flyTo(lf, 6, {
         duration: 1.5,

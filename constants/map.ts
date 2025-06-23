@@ -5,5 +5,7 @@ export const MAP_CONFIG = {
   BLOCKS_PER_CRS_UNIT_AT_MAX_ZOOM: 64,
 } as const;
 
+export const MAP_STORAGE_KEY = "markers";
+
 export const TRANSPARENT_TILE_BASE64 =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGPQ19cHAAEeAI5OnbmSAAAAAElFTkSuQmCC=";
