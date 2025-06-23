@@ -79,6 +79,7 @@ function CoordinatesInput({
             id="x"
             value={coords.x}
             onChange={handleChange}
+            onKeyDown={(e) => e.key === "Enter" && locateCoords()}
           />
         </div>
         <div>
@@ -87,6 +88,7 @@ function CoordinatesInput({
             id="z"
             value={coords.z}
             onChange={handleChange}
+            onKeyDown={(e) => e.key === "Enter" && locateCoords()}
           />
         </div>
       </div>
