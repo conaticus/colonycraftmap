@@ -2,12 +2,15 @@
 
 import { MapContainer } from "react-leaflet";
 import L from "leaflet";
+import Control from "react-leaflet-custom-control";
 
 import "leaflet/dist/leaflet.css";
 
 import { useMarkers } from "@/hooks/use-markers";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 import { tileUrl } from "@/lib/utils";
+import type { Settings as SettingsType } from "@/lib/types";
 import { calculateMapDimensions } from "@/lib/map";
 
 import { MAP_CONFIG } from "@/constants/map";
@@ -17,6 +20,7 @@ import { MapClickHandler, MarkerLayer } from "./marker";
 import { CustomTileLayer } from "./tiles";
 import { OreLayers } from "./ores";
 import { Usage } from "./usage";
+import { Settings } from "./settings";
 // import { ColoniesLayer } from "./colonies";
 
 // fix for default markers in react-leaflet
@@ -58,15 +62,19 @@ function Placeholder() {
 export default function EarthMap() {
   const dims = calculateMapDimensions();
 
-  const { markers, addMarker, removeMarker, moveMarker, saveMarkers } =
+  const [settings, setSettings] = useLocalStorage<SettingsType>("settings", {
+    showMarkerNames: true,
+  });
+
+  const { markers, addMarker, moveMarker, renameMarker, removeMarker } =
     useMarkers();
 
   return (
-    <div className="fixed size-full">
+    <div className="fixed inset-0">
       <MapContainer
-        className="size-full [&>*]:!font-sans relative"
+        className="w-full h-full [&>*]:!font-sans relative"
         placeholder={<Placeholder />}
-        center={dims.center}
+        center={dims.center as [number, number]}
         zoom={3}
         minZoom={0}
         maxZoom={MAP_CONFIG.MAX_ZOOM}
@@ -78,19 +86,36 @@ export default function EarthMap() {
         wheelPxPerZoomLevel={120}
         preferCanvas
       >
+        <Control
+          container={{
+            className: "flex flex-col gap-2.5",
+            style: { background: "none" },
+          }}
+          position="bottomright"
+          prepend
+        >
+          <Usage />
+          <Settings
+            settings={settings}
+            setSettings={setSettings}
+          />
+        </Control>
         <CustomTileLayer
           url={tileUrl("earth")}
           dims={dims}
           withAttribution
         />
-        <Usage />
         <Coordinates addMarker={addMarker} />
         <OreLayers dims={dims} />
         <MapClickHandler onAddMarker={addMarker} />
         <MarkerLayer
-          {...{ markers, addMarker, removeMarker, moveMarker, saveMarkers }}
+          showMarkerNames={settings.showMarkerNames}
+          markers={markers}
+          addMarker={addMarker}
+          removeMarker={removeMarker}
+          moveMarker={moveMarker}
+          renameMarker={renameMarker}
         />
-        {/* <ColoniesLayer /> */}
       </MapContainer>
     </div>
   );
