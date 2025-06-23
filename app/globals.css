@@ -111,8 +111,11 @@
     @apply !rounded-b-md;
   }
 
+  .leaflet-bar,
   .leaflet-popup-content-wrapper,
-  .leaflet-bar {
+  .leaflet-control-layers,
+  .leaflet-control-layers-toggle,
+  .leaflet-control-layers-list {
     @apply !rounded-md;
   }
 
@@ -122,6 +125,10 @@
 
   .leaflet-popup-content {
     @apply !mx-0 !mb-0 !mt-4 !w-full;
+  }
+
+  .box {
+    @apply !rounded-md -translate-x-0.5 ring-2 ring-[#0003];
   }
 
   ::-webkit-scrollbar {
