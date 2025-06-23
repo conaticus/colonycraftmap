@@ -32,10 +32,9 @@ export function Usage() {
         <Control
           container={{
             className:
-              "tabular-nums size-11 -translate-x-0.5 flex flex-col rounded-[3px] flex justify-center items-center ring-2 ring-[#0003]",
+              "tabular-nums size-11 flex flex-col flex justify-center items-center box",
           }}
           position="topright"
-          // prepend
         >
           <span className="text-xl font-bold select-none">?</span>
         </Control>
@@ -52,6 +51,10 @@ export function Usage() {
           <p>
             Wherever you move the cursor, the corresponding coordinates are
             shown in the bottom left.
+          </p>
+          <p>
+            You can find your current coordinates in-game by pressing the{" "}
+            <kbd>F3</kbd> key and checking the top left of the screen.
           </p>
           <p>
             Additionally, you can enter coordinates in the two input fields at
