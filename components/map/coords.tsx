@@ -1,63 +1,21 @@
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import { useMap, useMapEvent } from "react-leaflet";
 import Control from "react-leaflet-custom-control";
-import { LocateIcon } from "lucide-react";
+import { CrosshairIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
+import type { LeafletMouseEvent } from "leaflet";
 
 import type { useMarkers } from "@/hooks/use-markers";
+
+import {
+  convertLeafletToMinecraft,
+  convertMinecraftToLeaflet,
+} from "@/lib/map";
 
 import { MAP_CONFIG } from "@/constants/map";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-
-import { calculateMapDimensions } from ".";
-
-export interface CoordinateConfig {
-  leafletOriginLngForMinecraftZero: number;
-  leafletOriginLatForMinecraftZero: number;
-  blocksPerLeafletUnit: number;
-}
-
-export function createCoordinateConfig(): CoordinateConfig {
-  const { effectiveWidth, effectiveHeight } = calculateMapDimensions();
-
-  return {
-    blocksPerLeafletUnit: MAP_CONFIG.BLOCKS_PER_CRS_UNIT_AT_MAX_ZOOM,
-    leafletOriginLngForMinecraftZero: effectiveWidth / 2,
-    leafletOriginLatForMinecraftZero: -effectiveHeight / 2,
-  };
-}
-
-export function convertMinecraftToLeaflet(
-  x: number,
-  z: number,
-  config: CoordinateConfig
-): { lat: number; lng: number } {
-  return {
-    lat:
-      config.leafletOriginLatForMinecraftZero - z / config.blocksPerLeafletUnit,
-    lng:
-      config.leafletOriginLngForMinecraftZero + x / config.blocksPerLeafletUnit,
-  };
-}
-
-export function convertLeafletToMinecraft(
-  lat: number,
-  lng: number,
-  config: CoordinateConfig
-): { x: number; z: number } {
-  return {
-    x: Math.round(
-      (lng - config.leafletOriginLngForMinecraftZero) *
-        config.blocksPerLeafletUnit
-    ),
-    z: Math.round(
-      (config.leafletOriginLatForMinecraftZero - lat) *
-        config.blocksPerLeafletUnit
-    ),
-  };
-}
 
 function CoordinatesInput({
   addMarker,
@@ -97,7 +55,7 @@ function CoordinatesInput({
       Math.abs(x) <= MAP_CONFIG.IMAGE_WIDTH / 2 &&
       Math.abs(z) <= MAP_CONFIG.IMAGE_HEIGHT / 2
     ) {
-      const lf = convertMinecraftToLeaflet(x, z, createCoordinateConfig());
+      const lf = convertMinecraftToLeaflet(x, z);
 
       addMarker({
         id: Date.now(),
@@ -115,28 +73,18 @@ function CoordinatesInput({
 
   return (
     <div className="text-sm flex flex-col gap-2 p-2 border-b border-b-border">
-      <span className="italic text-muted-foreground">Locate coordinates</span>
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center">
-          <label
-            className="!w-4"
-            htmlFor="x"
-          >
-            X
-          </label>
+      <span className="font-medium">Locate coordinates</span>
+      <div className="flex [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&>div>label]:text-xs [&>div>label]:text-muted-foreground gap-2">
+        <div>
+          <label htmlFor="x">X</label>
           <Input
             id="x"
             value={coords.x}
             onChange={handleChange}
           />
         </div>
-        <div className="flex items-center">
-          <label
-            className="!w-4"
-            htmlFor="z"
-          >
-            Z
-          </label>
+        <div>
+          <label htmlFor="z">Z</label>
           <Input
             id="z"
             value={coords.z}
@@ -144,67 +92,67 @@ function CoordinatesInput({
           />
         </div>
       </div>
-      <Button
-        className="ml-auto"
-        variant="outline"
-        size="xs"
-        title="Locate coordinates on map"
-        onClick={locateCoords}
-      >
-        <LocateIcon className="size-3.5" />
-        Locate
-      </Button>
+      <div className="flex gap-2 w-full">
+        <Button
+          className="flex-1"
+          title="Locate coordinates on map"
+          variant="default"
+          size="xs"
+          onClick={locateCoords}
+        >
+          <CrosshairIcon className="size-3" />
+          Locate
+        </Button>
+        <Button
+          className="size-7"
+          title="Clear coordinates"
+          variant="secondary"
+          onClick={() => setCoords({ x: "", z: "" })}
+        >
+          <XIcon className="size-3" />
+        </Button>
+      </div>
     </div>
   );
 }
 
-function CoordinatesDisplay({ config }: { config: CoordinateConfig }) {
-  const {
-    leafletOriginLngForMinecraftZero,
-    leafletOriginLatForMinecraftZero,
-    blocksPerLeafletUnit,
-  } = config;
-
+const CoordinatesDisplay = memo(function CoordinatesDisplay() {
   const [coords, setCoords] = useState({
     leaflet: { lat: 0, lng: 0 },
     minecraft: { x: 0, z: 0 },
   });
 
-  useMapEvent("mousemove", (e) => {
+  const handleMouseMove = useCallback((e: LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
-    const minecraft = convertLeafletToMinecraft(lat, lng, {
-      leafletOriginLngForMinecraftZero,
-      leafletOriginLatForMinecraftZero,
-      blocksPerLeafletUnit,
-    });
+    const minecraft = convertLeafletToMinecraft(lat, lng);
 
     setCoords({ leaflet: { lat, lng }, minecraft });
-  });
+  }, []);
+
+  useMapEvent("mousemove", handleMouseMove);
 
   return (
-    <span className="text-sm p-2 font-medium">
+    <span className="text-sm p-2">
       X {coords.minecraft.x}, Z {coords.minecraft.z}
     </span>
   );
-}
+});
 
 export function Coordinates({
-  config,
   addMarker,
 }: {
-  config: CoordinateConfig;
   addMarker: ReturnType<typeof useMarkers>["addMarker"];
 }) {
   return (
     <Control
       container={{
-        className: "tabular-nums min-w-44 flex flex-col rounded-md",
+        className: "tabular-nums w-48 flex flex-col box",
       }}
       position="bottomleft"
       prepend
     >
       <CoordinatesInput addMarker={addMarker} />
-      <CoordinatesDisplay config={config} />
+      <CoordinatesDisplay />
     </Control>
   );
 }

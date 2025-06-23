@@ -1,10 +1,14 @@
 import { TileLayer } from "react-leaflet";
+import { memo } from "react";
+
+import type { calculateMapDimensions } from "@/lib/map";
 
 import { TRANSPARENT_TILE_BASE64 } from "@/constants/map";
 
-import type { calculateMapDimensions } from ".";
+const attribution =
+  'Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth Map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, Tiles generated using <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a>';
 
-export function CustomTileLayer({
+export const CustomTileLayer = memo(function CustomTileLayer({
   url,
   withAttribution = false,
   opacity = 1,
@@ -15,12 +19,8 @@ export function CustomTileLayer({
   opacity?: number;
   dims: ReturnType<typeof calculateMapDimensions>;
 }) {
-  const attribution =
-    'Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth Map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, Tiles generated using <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a>';
-
   return (
     <TileLayer
-      // attribution='Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, Generated using <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a>'
       attribution={withAttribution ? attribution : undefined}
       url={url}
       errorTileUrl={TRANSPARENT_TILE_BASE64}
@@ -32,4 +32,4 @@ export function CustomTileLayer({
       tms
     />
   );
-}
+});

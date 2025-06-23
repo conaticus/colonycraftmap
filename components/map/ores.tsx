@@ -1,41 +1,42 @@
 import { LayerGroup, LayersControl } from "react-leaflet";
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 import { tileUrl } from "@/lib/utils";
+import type { calculateMapDimensions } from "@/lib/map";
 
 import { ORES } from "@/constants/ores";
 
 import { CustomTileLayer } from "./tiles";
 
-import type { calculateMapDimensions } from ".";
-
 export function OreLayers({
   dims,
 }: { dims: ReturnType<typeof calculateMapDimensions> }) {
-  const [checkedLayers, setCheckedLayers] = useState<Record<string, boolean>>(
-    ORES.reduce(
-      (acc, ore) => Object.fromEntries([...Object.entries(acc), [ore, false]]),
-      {}
-    )
+  const initialState = useMemo(
+    () =>
+      ORES.reduce(
+        (acc, ore) => Object.assign(acc, { [ore.id]: false }),
+        {} as Record<string, boolean>
+      ),
+    []
   );
 
-  const handleLayerToggle = (ore: string) => {
-    if (ore === "all_ores") {
-      setCheckedLayers(
-        ORES.reduce(
-          (acc, ore) =>
-            Object.fromEntries([...Object.entries(acc), [ore, false]]),
-          {}
-        )
-      );
-    } else {
-      setCheckedLayers((prev) => ({
-        ...prev,
-        [ore]: !prev[ore],
-        all_ores: false,
-      }));
-    }
-  };
+  const [checkedLayers, setCheckedLayers] =
+    useState<Record<string, boolean>>(initialState);
+
+  const handleLayerToggle = useCallback(
+    (ore: string) => {
+      if (ore === "all_ores") {
+        setCheckedLayers(initialState);
+      } else {
+        setCheckedLayers((prev) => ({
+          ...prev,
+          [ore]: !prev[ore],
+          all_ores: false,
+        }));
+      }
+    },
+    [initialState]
+  );
 
   return (
     <LayersControl position="topright">

@@ -2,48 +2,30 @@
 
 import { MapContainer } from "react-leaflet";
 import L from "leaflet";
-import { useMemo } from "react";
 
 import "leaflet/dist/leaflet.css";
 
 import { useMarkers } from "@/hooks/use-markers";
 
 import { tileUrl } from "@/lib/utils";
+import { calculateMapDimensions } from "@/lib/map";
 
 import { MAP_CONFIG } from "@/constants/map";
 
-import { Coordinates, createCoordinateConfig } from "./coords";
+import { Coordinates } from "./coords";
 import { MapClickHandler, MarkerLayer } from "./marker";
 import { CustomTileLayer } from "./tiles";
 import { OreLayers } from "./ores";
 import { Usage } from "./usage";
+// import { ColoniesLayer } from "./colonies";
 
 // fix for default markers in react-leaflet
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  iconRetinaUrl: "/marker-2x.png",
+  iconUrl: "/marker.png",
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
 });
-
-export function calculateMapDimensions() {
-  const effectiveWidth =
-    MAP_CONFIG.IMAGE_WIDTH / MAP_CONFIG.BLOCKS_PER_CRS_UNIT_AT_MAX_ZOOM;
-  const effectiveHeight =
-    MAP_CONFIG.IMAGE_HEIGHT / MAP_CONFIG.BLOCKS_PER_CRS_UNIT_AT_MAX_ZOOM;
-
-  return {
-    effectiveWidth,
-    effectiveHeight,
-    bounds: [
-      [-effectiveHeight, 0],
-      [0, effectiveWidth],
-    ] as L.LatLngBoundsExpression,
-    center: [-effectiveHeight / 2, effectiveWidth / 2] as L.LatLngExpression,
-  };
-}
 
 export function isWithinMapBounds(lat: number, lng: number): boolean {
   const { effectiveWidth, effectiveHeight } = calculateMapDimensions();
@@ -64,10 +46,17 @@ export function removeUrlParams(searchParams: URLSearchParams) {
   window.history.replaceState({}, "", nu);
 }
 
+function Placeholder() {
+  return (
+    <p>
+      Map of Colony Craft
+      <noscript>You need to enable JavaScript to see this map.</noscript>
+    </p>
+  );
+}
+
 export default function EarthMap() {
   const dims = calculateMapDimensions();
-
-  const config = useMemo(() => createCoordinateConfig(), []);
 
   const { markers, addMarker, removeMarker, moveMarker, saveMarkers } =
     useMarkers();
@@ -76,6 +65,7 @@ export default function EarthMap() {
     <div className="fixed size-full">
       <MapContainer
         className="size-full [&>*]:!font-sans relative"
+        placeholder={<Placeholder />}
         center={dims.center}
         zoom={3}
         minZoom={0}
@@ -94,19 +84,13 @@ export default function EarthMap() {
           withAttribution
         />
         <Usage />
-        <Coordinates
-          config={config}
-          addMarker={addMarker}
-        />
+        <Coordinates addMarker={addMarker} />
         <OreLayers dims={dims} />
-        <MapClickHandler
-          config={config}
-          onAddMarker={addMarker}
-        />
+        <MapClickHandler onAddMarker={addMarker} />
         <MarkerLayer
-          config={config}
           {...{ markers, addMarker, removeMarker, moveMarker, saveMarkers }}
         />
+        {/* <ColoniesLayer /> */}
       </MapContainer>
     </div>
   );
