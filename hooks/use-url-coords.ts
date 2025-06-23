@@ -3,13 +3,11 @@ import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 
 import { isWithinMapBounds, removeUrlParams } from "@/components/map";
-import {
-  convertMinecraftToLeaflet,
-  type CoordinateConfig,
-} from "@/components/map/coords";
 import type { MarkerData } from "@/components/map/marker";
 
-export function useUrlCoordinates(config: CoordinateConfig): MarkerData | null {
+import { convertMinecraftToLeaflet } from "@/lib/map";
+
+export function useUrlCoordinates(): MarkerData | null {
   const searchParams = useSearchParams();
   const map = useMap();
   const [urlMarker, setUrlMarker] = useState<MarkerData | null>(null);
@@ -23,7 +21,7 @@ export function useUrlCoordinates(config: CoordinateConfig): MarkerData | null {
       const zi = Number.parseInt(z, 10);
 
       if (!Number.isNaN(xi) && !Number.isNaN(zi)) {
-        const lf = convertMinecraftToLeaflet(xi, zi, config);
+        const lf = convertMinecraftToLeaflet(xi, zi);
 
         if (isWithinMapBounds(lf.lat, lf.lng)) {
           setUrlMarker({
@@ -42,7 +40,7 @@ export function useUrlCoordinates(config: CoordinateConfig): MarkerData | null {
         removeUrlParams(searchParams);
       }
     } else setUrlMarker(null);
-  }, [searchParams, config, map.flyTo]);
+  }, [searchParams, map.flyTo]);
 
   return urlMarker;
 }

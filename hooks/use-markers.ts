@@ -2,22 +2,15 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
 import type { MarkerData } from "@/components/map/marker";
-import {
-  convertLeafletToMinecraft,
-  type CoordinateConfig,
-} from "@/components/map/coords";
 import { isWithinMapBounds } from "@/components/map";
+
+import { convertLeafletToMinecraft } from "@/lib/map";
 
 export interface Markers {
   markers: MarkerData[];
   addMarker: (marker: MarkerData) => void;
   removeMarker: (markerId: number) => void;
-  moveMarker: (
-    markerId: number,
-    newLat: number,
-    newLng: number,
-    config: CoordinateConfig
-  ) => void;
+  moveMarker: (markerId: number, newLat: number, newLng: number) => void;
   saveMarkers: () => void;
   setMarkers: (markers: MarkerData[]) => void;
 }
@@ -45,15 +38,10 @@ export function useMarkers(): Markers {
     toast.success("Deleted marker");
   }
 
-  function moveMarker(
-    markerId: number,
-    newLat: number,
-    newLng: number,
-    config: CoordinateConfig
-  ) {
+  function moveMarker(markerId: number, newLat: number, newLng: number) {
     if (!isWithinMapBounds(newLat, newLng)) return;
 
-    const minecraft = convertLeafletToMinecraft(newLat, newLng, config);
+    const minecraft = convertLeafletToMinecraft(newLat, newLng);
 
     setMarkers((prev) =>
       prev.map((m) =>
