@@ -1,88 +1,98 @@
-import { CopyIcon, SaveIcon, Share2Icon, Trash2Icon } from "lucide-react";
-import { Marker, Popup, useMapEvent } from "react-leaflet";
-import { memo, useCallback, useMemo } from "react";
+import { CopyIcon, InfoIcon, Share2Icon, Trash2Icon } from "lucide-react";
+import { Marker, Popup, Tooltip, useMapEvent } from "react-leaflet";
+import { memo, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import type { DragEndEvent, LeafletMouseEvent } from "leaflet";
 
-import { convertLeafletToMinecraft } from "@/lib/map";
-
-import type { Markers } from "@/hooks/use-markers";
 import { useUrlCoordinates } from "@/hooks/use-url-coords";
 
 import { Button } from "../ui/button";
+import { InlineEdit } from "../ui/inline-edit";
 
 import { isWithinMapBounds, removeUrlParams } from ".";
 
 export interface MarkerData {
   id: number;
+  name: string;
   leaflet: { lat: number; lng: number };
   minecraft: { x: number; z: number };
 }
 
-export const MapClickHandler = memo(function MapClickHandler({
-  onAddMarker,
-}: { onAddMarker: (marker: MarkerData) => void }) {
-  const handleMapClick = useCallback(
-    (e: LeafletMouseEvent) => {
+export const MapClickHandler = memo(
+  ({
+    onAddMarker,
+  }: { onAddMarker: (marker: MarkerData["leaflet"]) => void }) => {
+    useMapEvent("click", (e: LeafletMouseEvent) => {
       const { lat, lng } = e.latlng;
 
       if (!isWithinMapBounds(lat, lng)) return;
 
-      const newMarker = {
-        id: Date.now(),
-        leaflet: { lat, lng },
-        minecraft: convertLeafletToMinecraft(lat, lng),
-      };
+      onAddMarker({ lat, lng });
+    });
 
-      onAddMarker(newMarker);
-    },
-    [onAddMarker]
-  );
-
-  useMapEvent("click", handleMapClick);
-  return null;
-});
+    return null;
+  }
+);
 
 function MarkerPopup({
   marker,
-  onSave,
   onRemove,
+  onRename,
 }: {
   marker: MarkerData;
-  onSave: (markerId: number) => void;
   onRemove: (id: number) => void;
+  onRename: (markerId: number, newName: string) => void;
 }) {
-  const isUrlMarker = marker.id === -1;
-
-  function handleShare(e: React.MouseEvent) {
-    e.stopPropagation();
-    const url = `${window.location.origin}${window.location.pathname}?x=${marker.minecraft.x}&z=${marker.minecraft.z}`;
-    navigator.clipboard.writeText(url);
-    toast.success("Copied marker URL");
-  }
-
-  function handleCopyCoords(e: React.MouseEvent) {
+  const commonStop = useCallback((e: React.MouseEvent, fn: () => void) => {
     e.stopPropagation();
 
-    const coords = `X ${marker.minecraft.x}, Z ${marker.minecraft.z}`;
+    fn();
+  }, []);
 
-    navigator.clipboard.writeText(coords);
+  const copyUrl = useCallback(
+    (e: React.MouseEvent) =>
+      commonStop(e, () => {
+        const url = `${window.location.origin}${window.location.pathname}?x=${marker.minecraft.x}&z=${marker.minecraft.z}`;
 
-    toast.success("Copied marker coordinates");
-  }
+        navigator.clipboard.writeText(url);
 
-  function handleSave(e: React.MouseEvent) {
-    e.stopPropagation();
-    onSave(marker.id);
-  }
+        toast.success("Copied marker URL");
+      }),
+    [marker, commonStop]
+  );
 
-  function handleRemove(e: React.MouseEvent) {
-    e.stopPropagation();
-    onRemove(marker.id);
-  }
+  const copyCoords = useCallback(
+    (e: React.MouseEvent) =>
+      commonStop(e, () => {
+        const coords = `X ${marker.minecraft.x}, Z ${marker.minecraft.z}`;
+
+        navigator.clipboard.writeText(coords);
+
+        toast.success("Copied marker coordinates");
+      }),
+    [marker, commonStop]
+  );
+
+  const remove = useCallback(
+    (e: React.MouseEvent) => commonStop(e, () => onRemove(marker.id)),
+    [onRemove, marker.id, commonStop]
+  );
 
   return (
     <Popup className="box">
+      <div className="flex justify-between items-center gap-1">
+        <span className="w-1/3 font-semibold inline-flex items-center gap-1.5">
+          Name
+          <span title="Tip: Click the name to edit it">
+            <InfoIcon className="size-3.5" />
+          </span>
+        </span>
+        <InlineEdit
+          id={marker.id}
+          name={marker.name}
+          onRename={onRename}
+        />
+      </div>
       <div className="flex flex-col gap-1 tabular-nums">
         <div className="flex justify-between items-center gap-1">
           <span className="w-1/3 font-semibold">Coordinates</span>
@@ -90,43 +100,36 @@ function MarkerPopup({
             X {marker.minecraft.x}, Z {marker.minecraft.z}
           </span>
         </div>
-        {isUrlMarker && (
-          <span className="text-xs text-muted-foreground">
-            (added from url parameters)
-          </span>
-        )}
       </div>
       <div className="flex gap-1 justify-end w-full border-t pt-2 mt-2">
         <Button
+          title="Share marker coordinates as URL"
           variant="outline"
           size="icon"
-          onClick={handleShare}
-          title="Share marker coordinates as URL"
+          onClick={copyUrl}
         >
           <Share2Icon className="size-3.5" />
         </Button>
         <Button
+          title="Copy coordinates"
           variant="outline"
           size="icon"
-          onClick={handleCopyCoords}
-          title="Copy coordinates"
+          onClick={copyCoords}
         >
           <CopyIcon className="size-3.5" />
         </Button>
         <Button
-          variant="outline"
-          size="icon"
-          onClick={handleSave}
-          title="Store marker locally"
-        >
-          <SaveIcon className="size-3.5" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
           className="text-destructive hover:text-destructive hover:bg-destructive/10 hover:border-destructive/10"
-          onClick={handleRemove}
           title="Remove marker"
+          variant="outline"
+          size="icon"
+          onClick={(e) => {
+            remove(e);
+
+            if (marker.id === -1) {
+              removeUrlParams(new URLSearchParams(window.location.search));
+            }
+          }}
         >
           <Trash2Icon className="size-3.5" />
         </Button>
@@ -135,69 +138,90 @@ function MarkerPopup({
   );
 }
 
-const MapMarker = memo(function MapMarker({
+const MapMarker = ({
   marker,
+  showMarkerNames,
   onMove,
-  onSave,
   onRemove,
+  onRename,
 }: {
   marker: MarkerData;
+  showMarkerNames: boolean;
   onMove: (id: number, lat: number, lng: number) => void;
-  onSave: (markerId: number) => void;
   onRemove: (id: number) => void;
-}) {
-  const eventHandlers = useMemo(
-    () => ({
-      dragend: (e: DragEndEvent) => {
-        const { lat, lng } = e.target.getLatLng();
+  onRename: (id: number, name: string) => void;
+}) => {
+  const onDragEnd = useMemo(
+    () =>
+      ({ target }: DragEndEvent) => {
+        const { lat, lng } = target.getLatLng();
+
+        if (!isWithinMapBounds(lat, lng)) return;
+
         onMove(marker.id, lat, lng);
       },
-    }),
-    [onMove, marker.id]
+    [marker.id, onMove]
   );
-
-  const coords = `X ${marker.minecraft.x}, Z ${marker.minecraft.z}`;
 
   return (
     <Marker
+      title={`${marker.name}\nX ${marker.minecraft.x}, Z ${marker.minecraft.z}`}
       position={[marker.leaflet.lat, marker.leaflet.lng]}
-      eventHandlers={eventHandlers}
-      title={coords}
+      eventHandlers={{ dragend: onDragEnd }}
       draggable
     >
       <MarkerPopup
         marker={marker}
-        onSave={onSave}
         onRemove={onRemove}
+        onRename={onRename}
       />
+      {showMarkerNames && (
+        <Tooltip
+          className="!bg-background/50 !p-1 !shadow-none !text-foreground !border-none before:!border-none !leading-none !text-[0.65rem] max-w-24 truncate"
+          content={marker.name}
+          position={[marker.leaflet.lat, marker.leaflet.lng]}
+          direction="bottom"
+          offset={[-14.5, 27.5]}
+          key={[marker.id, marker.name].join("-")}
+          permanent
+        />
+      )}
     </Marker>
   );
-});
+};
 
 export function MarkerLayer({
+  showMarkerNames,
   markers,
   addMarker,
   removeMarker,
   moveMarker,
-  saveMarkers,
+  renameMarker,
 }: {
-  markers: Markers["markers"];
-  addMarker: Markers["addMarker"];
-  removeMarker: Markers["removeMarker"];
-  moveMarker: Markers["moveMarker"];
-  saveMarkers: Markers["saveMarkers"];
+  showMarkerNames: boolean;
+  markers: MarkerData[];
+  addMarker: (leaflet: MarkerData["leaflet"]) => void;
+  removeMarker: (id: number) => void;
+  moveMarker: (id: number, lat: number, lng: number) => void;
+  renameMarker: (id: number, name: string) => void;
 }) {
-  const urlM = useUrlCoordinates();
+  const urlMarker = useUrlCoordinates();
+
+  useEffect(() => {
+    if (!urlMarker) return;
+
+    addMarker(urlMarker.leaflet);
+    removeUrlParams(new URLSearchParams(window.location.search));
+  }, [urlMarker, addMarker]);
 
   const allMarkers = useMemo(
-    () => (urlM ? [...markers, urlM] : markers),
-    [markers, urlM]
+    () => (urlMarker ? [...markers, urlMarker] : markers),
+    [markers, urlMarker]
   );
 
   const handleMove = useCallback(
     (id: number, lat: number, lng: number) => {
-      if (id === -1) return;
-      moveMarker(id, lat, lng);
+      if (id !== -1) moveMarker(id, lat, lng);
     },
     [moveMarker]
   );
@@ -205,8 +229,7 @@ export function MarkerLayer({
   const handleRemove = useCallback(
     (id: number) => {
       if (id === -1) {
-        const p = new URLSearchParams(window.location.search);
-        removeUrlParams(p);
+        removeUrlParams(new URLSearchParams(window.location.search));
       } else {
         removeMarker(id);
       }
@@ -214,30 +237,16 @@ export function MarkerLayer({
     [removeMarker]
   );
 
-  const handleSave = useCallback(
-    (id: number) => {
-      if (id === -1 && urlM) {
-        addMarker({ ...urlM, id: Date.now() });
-        saveMarkers();
-
-        const p = new URLSearchParams(window.location.search);
-        removeUrlParams(p);
-      } else {
-        saveMarkers();
-      }
-    },
-    [addMarker, urlM, saveMarkers]
-  );
-
   return (
     <>
-      {allMarkers.map((m) => (
+      {allMarkers.map((marker) => (
         <MapMarker
-          key={m.id}
-          marker={m}
+          marker={marker}
+          showMarkerNames={showMarkerNames}
           onMove={handleMove}
-          onSave={handleSave}
           onRemove={handleRemove}
+          onRename={renameMarker}
+          key={`${marker.id}-${showMarkerNames}`} // Add showMarkerNames to key
         />
       ))}
     </>
