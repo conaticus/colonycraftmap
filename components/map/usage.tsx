@@ -2,13 +2,11 @@ import {
   ArrowUpRightIcon,
   CopyIcon,
   LayersIcon,
-  SaveIcon,
   Share2Icon,
   Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import Control from "react-leaflet-custom-control";
 
 import {
   Dialog,
@@ -28,17 +26,10 @@ export function Usage() {
     <Dialog
       open={isOpen}
       onOpenChange={setOpen}
+      modal
     >
-      <DialogTrigger>
-        <Control
-          container={{
-            className:
-              "tabular-nums size-11 flex flex-col flex justify-center items-center box",
-          }}
-          position="topright"
-        >
-          <span className="text-xl font-bold select-none">?</span>
-        </Control>
+      <DialogTrigger className="size-11 flex flex-col justify-center items-center box">
+        <span className="text-xl font-bold select-none">?</span>
       </DialogTrigger>
       <DialogContent className="font-sans sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5 overflow-y-auto">
         <DialogHeader>
@@ -48,6 +39,12 @@ export function Usage() {
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col prose-headings:mb-3 prose-headings:mt-0 prose-p:mt-0 prose-p:mb-3 prose-ul:mb-3 prose prose-sm prose-invert [&_svg]:size-3.5 [&_li]:flex [&_li]:gap-2 [&_li]:items-center [&_svg]:inline [&_ul]:list-none [&_ul]:pl-0 [&_span]:size-5 [&_span]:bg-secondary [&_span]:rounded-sm [&_span]:inline-flex [&_span]:justify-center [&_span]:items-center">
+          <h2>Colonies</h2>
+          <p>
+            At the moment, it isn't possible to see players or colonies on the
+            map. A system is in the works where you can see all claimed
+            territory.
+          </p>
           <h2>Coordinates</h2>
           <p>
             Wherever you move the cursor, the corresponding coordinates are
@@ -80,12 +77,6 @@ export function Usage() {
                 <CopyIcon />
               </span>
               Copy coordinates (e.g X 134, Z 567)
-            </li>
-            <li>
-              <span>
-                <SaveIcon />
-              </span>
-              Save marker locally
             </li>
             <li>
               <span>
