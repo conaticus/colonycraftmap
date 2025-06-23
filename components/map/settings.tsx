@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
+import { Switch } from "../ui/switch";
 
 export function Settings({
   settings,
@@ -32,25 +33,24 @@ export function Settings({
       <DialogTrigger className="size-11 flex flex-col justify-center items-center box">
         <SettingsIcon className="size-5" />
       </DialogTrigger>
-      <DialogContent className="font-sans sm:max-h-[min(640px,80vh)] sm:max-w-xs [&>button:last-child]:top-3.5 overflow-y-auto">
+      <DialogContent className="font-sans sm:max-h-[min(640px,80vh)] sm:max-w-md [&>button:last-child]:top-3.5 overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
-          <DialogDescription>Customize the map.</DialogDescription>
+          <DialogDescription>
+            Customize the map to your liking.
+          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col">
           <Setting
-            label="Show marker names?"
+            label="Show marker names"
+            description="Show the name of the marker beneath the marker."
             id="show-marker-names"
           >
-            <input
-              type="checkbox"
+            <Switch
               id="show-marker-names"
               checked={settings.showMarkerNames}
-              onChange={(e) =>
-                setSettings({
-                  ...settings,
-                  showMarkerNames: e.target.checked,
-                })
+              onCheckedChange={(checked) =>
+                setSettings({ ...settings, showMarkerNames: checked })
               }
             />
           </Setting>
@@ -65,22 +65,27 @@ export function Settings({
 
 function Setting({
   label,
+  description,
   id,
   children,
 }: {
   label: string;
+  description: string;
   id?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between">
-      <label
-        className="text-sm"
-        htmlFor={id}
-      >
-        {label}
-      </label>
-      {children}
+    <div className="flex items-start justify-between w-full">
+      <div className="flex flex-col w-2/3">
+        <label
+          className="text-sm font-medium"
+          htmlFor={id}
+        >
+          {label}
+        </label>
+        <span className="text-xs text-muted-foreground">{description}</span>
+      </div>
+      <div className="mt-1">{children}</div>
     </div>
   );
 }
