@@ -126,7 +126,12 @@ const CoordinatesDisplay = memo(function CoordinatesDisplay() {
     const { lat, lng } = e.latlng;
     const minecraft = convertLeafletToMinecraft(lat, lng);
 
-    setCoords({ leaflet: { lat, lng }, minecraft });
+    if (
+      Math.abs(minecraft.x) <= MAP_CONFIG.IMAGE_WIDTH / 2 &&
+      Math.abs(minecraft.z) <= MAP_CONFIG.IMAGE_HEIGHT / 2
+    ) {
+      setCoords({ leaflet: { lat, lng }, minecraft });
+    }
   }, []);
 
   useMapEvent("mousemove", handleMouseMove);
