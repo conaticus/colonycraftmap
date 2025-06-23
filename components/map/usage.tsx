@@ -1,6 +1,7 @@
 import {
   ArrowUpRightIcon,
   CopyIcon,
+  LayersIcon,
   SaveIcon,
   Share2Icon,
   Trash2Icon,
@@ -46,7 +47,7 @@ export function Usage() {
             Some information about how to use the map.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col prose-headings:mb-3 prose-headings:mt-0 prose-p:mt-0 prose-p:mb-3 prose-ul:mb-3 prose prose-sm prose-invert [&_svg]:size-4 [&_li]:flex [&_li]:gap-2 [&_li]:items-center [&_svg]:inline [&_ul]:list-none [&_ul]:pl-0">
+        <div className="flex flex-col prose-headings:mb-3 prose-headings:mt-0 prose-p:mt-0 prose-p:mb-3 prose-ul:mb-3 prose prose-sm prose-invert [&_svg]:size-3.5 [&_li]:flex [&_li]:gap-2 [&_li]:items-center [&_svg]:inline [&_ul]:list-none [&_ul]:pl-0 [&_span]:size-5 [&_span]:bg-secondary [&_span]:rounded-sm [&_span]:inline-flex [&_span]:justify-center [&_span]:items-center">
           <h2>Coordinates</h2>
           <p>
             Wherever you move the cursor, the corresponding coordinates are
@@ -69,25 +70,38 @@ export function Usage() {
           <h3>Actions</h3>
           <ul className="list-none">
             <li>
-              <Share2Icon />
+              <span>
+                <Share2Icon />
+              </span>
               Copy marker coordinates as URL
             </li>
             <li>
-              <CopyIcon />
+              <span>
+                <CopyIcon />
+              </span>
               Copy coordinates (e.g X 134, Z 567)
             </li>
             <li>
-              <SaveIcon /> Save marker locally
+              <span>
+                <SaveIcon />
+              </span>
+              Save marker locally
             </li>
             <li>
-              <Trash2Icon /> Remove marker
+              <span>
+                <Trash2Icon />
+              </span>
+              Remove marker
             </li>
           </ul>
           <h2>Ores</h2>
           <p>
-            In the top right of the map, you'll see a button which when hovered
-            will show a list of ore layers. You can select them to show or hide
-            them.
+            In the top right, you'll see a button with an icon of
+            <span className="mx-1">
+              <LayersIcon />
+            </span>
+            which when hovered will show a list of ore layers. You can select
+            them to show or hide them.
           </p>
           <h2>Other</h2>
           <p>
@@ -98,7 +112,7 @@ export function Usage() {
               target="_blank"
             >
               colonycraft.org
-              <ArrowUpRightIcon className="!size-3.5" />
+              <ArrowUpRightIcon />
             </Link>
             .
           </p>
