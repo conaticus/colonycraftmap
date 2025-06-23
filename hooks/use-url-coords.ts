@@ -26,6 +26,7 @@ export function useUrlCoordinates(): MarkerData | null {
         if (isWithinMapBounds(lf.lat, lf.lng)) {
           setUrlMarker({
             id: -1,
+            name: "Unnamed",
             leaflet: lf,
             minecraft: { x: xi, z: zi },
           });
