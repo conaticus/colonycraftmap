@@ -6,7 +6,7 @@ import type { calculateMapDimensions } from "@/lib/map";
 import { TRANSPARENT_TILE_BASE64 } from "@/constants/map";
 
 const attribution =
-  'Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth Map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, Tiles generated using <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a>';
+  'Map data &copy; <a href="https://earth.motfe.net/" target="_blank">Minecraft Earth Map</a>, <a href="https://colonycraft.org/" target="_blank">Colony Craft</a>, <a href="https://github.com/itsbrunodev/tilegen" target="_blank">tilegen</a> | <a href="https://github.com/itsbrunodev/colonycraft" target="_blank">GitHub</a>';
 
 export const CustomTileLayer = memo(function CustomTileLayer({
   url,
