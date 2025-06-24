@@ -111,7 +111,6 @@ export default function EarthMap() {
         <MarkerLayer
           showMarkerNames={settings.showMarkerNames}
           markers={markers}
-          addMarker={addMarker}
           removeMarker={removeMarker}
           moveMarker={moveMarker}
           renameMarker={renameMarker}
