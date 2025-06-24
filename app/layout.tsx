@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Karla, Geist_Mono } from "next/font/google";
+import { Karla } from "next/font/google";
 import { Toaster } from "sonner";
 
 import "./globals.css";
 
 const regularFont = Karla({
   variable: "--font-sans",
-  subsets: ["latin"],
-});
-
-const monoFont = Geist_Mono({
-  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -27,9 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${regularFont.variable} ${monoFont.variable} antialiased`}
-      >
+      <body className={`${regularFont.variable} antialiased`}>
         {children}
         <Toaster
           position="bottom-center"
