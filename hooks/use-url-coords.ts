@@ -1,16 +1,14 @@
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 
 import { isWithinMapBounds, removeUrlParams } from "@/components/map";
-import type { MarkerData } from "@/components/map/marker";
 
 import { convertMinecraftToLeaflet } from "@/lib/map";
 
-export function useUrlCoordinates(): MarkerData | null {
+export function useUrlCoordinates() {
   const searchParams = useSearchParams();
   const map = useMap();
-  const [urlMarker, setUrlMarker] = useState<MarkerData | null>(null);
 
   useEffect(() => {
     const x = searchParams.get("x");
@@ -24,13 +22,6 @@ export function useUrlCoordinates(): MarkerData | null {
         const lf = convertMinecraftToLeaflet(xi, zi);
 
         if (isWithinMapBounds(lf.lat, lf.lng)) {
-          setUrlMarker({
-            id: -1,
-            name: "Unnamed",
-            leaflet: lf,
-            minecraft: { x: xi, z: zi },
-          });
-
           map.flyTo(lf, 6, {
             duration: 1.5,
           });
@@ -40,8 +31,6 @@ export function useUrlCoordinates(): MarkerData | null {
       } else {
         removeUrlParams(searchParams);
       }
-    } else setUrlMarker(null);
+    }
   }, [searchParams, map.flyTo]);
-
-  return urlMarker;
 }
