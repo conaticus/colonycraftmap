@@ -1,6 +1,6 @@
 import { CopyIcon, InfoIcon, Share2Icon, Trash2Icon } from "lucide-react";
-import { Marker, Popup, Tooltip, useMapEvent } from "react-leaflet";
-import { memo, useCallback, useEffect, useMemo } from "react";
+import { Marker, Popup, useMapEvent } from "react-leaflet";
+import { memo, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import type { DragEndEvent, LeafletMouseEvent } from "leaflet";
 
@@ -8,6 +8,7 @@ import { useUrlCoordinates } from "@/hooks/use-url-coords";
 
 import { Button } from "../ui/button";
 import { InlineEdit } from "../ui/inline-edit";
+import { Tooltip } from "../ui/tooltip";
 
 import { isWithinMapBounds, removeUrlParams } from ".";
 
@@ -81,7 +82,7 @@ function MarkerPopup({
   return (
     <Popup className="box">
       <div className="flex justify-between items-center gap-1">
-        <span className="w-1/3 font-semibold inline-flex items-center gap-1.5">
+        <span className="w-1/3 font-medium inline-flex items-center gap-1.5">
           Name
           <span title="Tip: Click the name to edit it">
             <InfoIcon className="size-3.5" />
@@ -93,13 +94,11 @@ function MarkerPopup({
           onRename={onRename}
         />
       </div>
-      <div className="flex flex-col gap-1 tabular-nums">
-        <div className="flex justify-between items-center gap-1">
-          <span className="w-1/3 font-semibold">Coordinates</span>
-          <span className="text-right text-xs text-muted-foreground">
-            X {marker.minecraft.x}, Z {marker.minecraft.z}
-          </span>
-        </div>
+      <div className="flex justify-between items-center gap-1 tabular-nums">
+        <span className="w-1/3 font-medium">Coordinates</span>
+        <span className="text-right text-xs text-muted-foreground">
+          X {marker.minecraft.x}, Z {marker.minecraft.z}
+        </span>
       </div>
       <div className="flex gap-1 justify-end w-full border-t pt-2 mt-2">
         <Button
@@ -177,10 +176,8 @@ const MapMarker = ({
       />
       {showMarkerNames && (
         <Tooltip
-          className="!bg-background/50 !p-1 !shadow-none !text-foreground !border-none before:!border-none !leading-none !text-[0.65rem] max-w-24 truncate"
           content={marker.name}
           position={[marker.leaflet.lat, marker.leaflet.lng]}
-          direction="bottom"
           offset={[-14.5, 27.5]}
           key={[marker.id, marker.name].join("-")}
           permanent
@@ -193,31 +190,17 @@ const MapMarker = ({
 export function MarkerLayer({
   showMarkerNames,
   markers,
-  addMarker,
   removeMarker,
   moveMarker,
   renameMarker,
 }: {
   showMarkerNames: boolean;
   markers: MarkerData[];
-  addMarker: (leaflet: MarkerData["leaflet"]) => void;
   removeMarker: (id: number) => void;
   moveMarker: (id: number, lat: number, lng: number) => void;
   renameMarker: (id: number, name: string) => void;
 }) {
-  const urlMarker = useUrlCoordinates();
-
-  useEffect(() => {
-    if (!urlMarker) return;
-
-    addMarker(urlMarker.leaflet);
-    removeUrlParams(new URLSearchParams(window.location.search));
-  }, [urlMarker, addMarker]);
-
-  const allMarkers = useMemo(
-    () => (urlMarker ? [...markers, urlMarker] : markers),
-    [markers, urlMarker]
-  );
+  useUrlCoordinates();
 
   const handleMove = useCallback(
     (id: number, lat: number, lng: number) => {
@@ -239,14 +222,14 @@ export function MarkerLayer({
 
   return (
     <>
-      {allMarkers.map((marker) => (
+      {markers.map((marker) => (
         <MapMarker
           marker={marker}
           showMarkerNames={showMarkerNames}
           onMove={handleMove}
           onRemove={handleRemove}
           onRename={renameMarker}
-          key={`${marker.id}-${showMarkerNames}`} // Add showMarkerNames to key
+          key={`${marker.id}-${showMarkerNames}`}
         />
       ))}
     </>
