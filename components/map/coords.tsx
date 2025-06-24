@@ -47,16 +47,13 @@ function CoordinatesInput({
     }
   }
 
-  function locateCoords() {
-    const x = Number.parseInt(coords.x);
-    const z = Number.parseInt(coords.z);
+  const x = Number.parseInt(coords.x);
+  const z = Number.parseInt(coords.z);
 
-    if (
-      !Number.isNaN(x) &&
-      !Number.isNaN(z) &&
-      Math.abs(x) <= MAP_CONFIG.IMAGE_WIDTH / 2 &&
-      Math.abs(z) <= MAP_CONFIG.IMAGE_HEIGHT / 2
-    ) {
+  const isValidCoords = !Number.isNaN(x) && !Number.isNaN(z);
+
+  function locateCoords() {
+    if (isValidCoords) {
       const lf = convertMinecraftToLeaflet(x, z);
 
       addMarker(lf);
@@ -98,6 +95,7 @@ function CoordinatesInput({
           title="Locate coordinates on map"
           variant="default"
           size="xs"
+          disabled={!isValidCoords}
           onClick={locateCoords}
         >
           <CrosshairIcon className="size-3" />
@@ -107,6 +105,8 @@ function CoordinatesInput({
           className="size-7"
           title="Clear coordinates"
           variant="secondary"
+          size="xs"
+          disabled={!isValidCoords}
           onClick={() => setCoords({ x: "", z: "" })}
         >
           <XIcon className="size-3" />
