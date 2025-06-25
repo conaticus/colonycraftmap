@@ -22,6 +22,7 @@ import { OreLayers } from "./ores";
 import { Usage } from "./usage";
 import { Settings } from "./settings";
 import { Players } from "./players";
+import { InitialPositionHandler } from "./initial-position";
 
 // fix for default markers in react-leaflet
 L.Icon.Default.mergeOptions({
@@ -85,6 +86,7 @@ export default function EarthMap() {
         zoomDelta={1}
         wheelPxPerZoomLevel={120}
         preferCanvas
+        keyboard
       >
         <Control
           container={{
@@ -116,6 +118,7 @@ export default function EarthMap() {
           withAttribution
         />
         <OreLayers dims={dims} />
+        <InitialPositionHandler />
         <MapClickHandler onAddMarker={addMarker} />
         <MarkerLayer
           showMarkerNames={settings.showMarkerNames}
