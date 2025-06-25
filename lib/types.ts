@@ -6,7 +6,6 @@ export interface CoordinateConfig {
 
 export interface Settings {
   showMarkerNames: boolean;
-  showColonies: boolean;
 }
 
 export interface Player {
