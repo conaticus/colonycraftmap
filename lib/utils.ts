@@ -13,3 +13,15 @@ export function tileUrl(type: string) {
     ).href
   );
 }
+
+export async function fetcher(url: string) {
+  return fetch(url).then((res) => res.json());
+}
+
+export function acronym(str: string) {
+  return str
+    .split(/\s+/)
+    .map((word) => word[0].toUpperCase())
+    .join("")
+    .slice(0, 3);
+}

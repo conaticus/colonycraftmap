@@ -21,7 +21,7 @@ import { CustomTileLayer } from "./tiles";
 import { OreLayers } from "./ores";
 import { Usage } from "./usage";
 import { Settings } from "./settings";
-// import { ColoniesLayer } from "./colonies";
+import { Players } from "./players";
 
 // fix for default markers in react-leaflet
 L.Icon.Default.mergeOptions({
@@ -99,6 +99,16 @@ export default function EarthMap() {
             settings={settings}
             setSettings={setSettings}
           />
+        </Control>
+        <Control
+          container={{
+            className: "flex flex-col gap-2.5",
+            style: { background: "none" },
+          }}
+          position="bottomleft"
+        >
+          <Players />
+          <Coordinates addMarker={addMarker} />
         </Control>
         <CustomTileLayer
           url={tileUrl("earth")}

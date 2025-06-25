@@ -1,6 +1,5 @@
 import { useState, useCallback, memo } from "react";
 import { useMap, useMapEvent } from "react-leaflet";
-import Control from "react-leaflet-custom-control";
 import { CrosshairIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 import type { LeafletMouseEvent } from "leaflet";
@@ -68,7 +67,7 @@ function CoordinatesInput({
 
   return (
     <div className="text-sm flex flex-col gap-2 p-2 border-b border-b-border">
-      <span className="font-medium">Locate coordinates</span>
+      <span className="font-medium">Locate Coordinates</span>
       <div className="flex [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&>div>label]:text-xs [&>div>label]:text-muted-foreground gap-2">
         <div>
           <label htmlFor="x">X</label>
@@ -149,15 +148,9 @@ export function Coordinates({
   addMarker: ReturnType<typeof useMarkers>["addMarker"];
 }) {
   return (
-    <Control
-      container={{
-        className: "tabular-nums w-48 flex flex-col box",
-      }}
-      position="bottomleft"
-      prepend
-    >
+    <div className="tabular-nums w-48 flex flex-col box">
       <CoordinatesInput addMarker={addMarker} />
       <CoordinatesDisplay />
-    </Control>
+    </div>
   );
 }
