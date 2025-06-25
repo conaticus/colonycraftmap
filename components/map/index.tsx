@@ -115,7 +115,6 @@ export default function EarthMap() {
           dims={dims}
           withAttribution
         />
-        <Coordinates addMarker={addMarker} />
         <OreLayers dims={dims} />
         <MapClickHandler onAddMarker={addMarker} />
         <MarkerLayer
