@@ -187,9 +187,6 @@ async function queryMinecraftServer(
           errorMessage.includes("Buffer too short") ||
           errorMessage.includes("incomplete")
         ) {
-          console.log(
-            `Waiting for more data... (current buffer: ${responseBuffer.length} bytes)`
-          );
           return; // continue receiving data
         }
 
