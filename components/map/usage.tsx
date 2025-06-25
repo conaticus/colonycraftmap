@@ -38,12 +38,11 @@ export function Usage() {
             Some information about how to use the map.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col prose-headings:mb-3 prose-headings:mt-0 prose-p:mt-0 prose-p:mb-3 prose-ul:mb-3 prose prose-sm prose-invert [&_svg]:size-3.5 [&_li]:flex [&_li]:gap-2 [&_li]:items-center [&_svg]:inline [&_ul]:list-none [&_ul]:pl-0 [&_span]:size-5 [&_span]:bg-secondary [&_span]:rounded-sm [&_span]:inline-flex [&_span]:justify-center [&_span]:items-center">
-          <h2>Colonies</h2>
+        <div className="flex flex-col prose-headings:mb-3 prose-headings:mt-0 prose-p:mt-0 prose-p:mb-3 prose-ul:mb-3 prose prose-sm prose-invert [&_svg]:size-3.5 [&_li]:flex [&_li]:gap-2 [&_li]:items-center [&_svg]:inline [&_ul]:list-none [&_ul]:pl-0 [&_span]:size-5 [&_span]:bg-secondary [&_span]:rounded-sm [&_span]:inline-flex [&_span]:justify-center [&_span]:items-center [&_a]:hover:opacity-80 [&_a]:transition-opacity">
+          <h2>Joining the server</h2>
           <p>
-            At the moment, it isn't possible to see players or colonies on the
-            map. A system is in the works where you can see all claimed
-            territory.
+            You can join the server using <b>mc.colonycraft.org</b> and
+            Minecraft version <b>1.21.5</b>.
           </p>
           <h2>Coordinates</h2>
           <p>
@@ -61,7 +60,7 @@ export function Usage() {
           <h2>Markers</h2>
           <p>
             Click and drag to move a marker. Click on a marker to view
-            information about it and to edit it. Clicking on the marker you'll
+            information about it and to edit it. Clicking on the marker, you'll
             see a list of available actions.
           </p>
           <h3>Actions</h3>
@@ -91,8 +90,24 @@ export function Usage() {
             <span className="mx-1">
               <LayersIcon />
             </span>
-            which when hovered will show a list of ore layers. You can select
-            them to show or hide them.
+            which when hovered over, will show a list of ore layers. You can
+            select them to show or hide them. Ores are covered in greater detail
+            in the{" "}
+            <Link
+              className="inline-flex gap-1 items-center"
+              href="https://colonycraft.org/docs/ore-spawns#special-ores"
+              target="_blank"
+            >
+              wiki
+              <ArrowUpRightIcon />
+            </Link>
+            .
+          </p>
+          <h2>Settings</h2>
+          <p>
+            In the bottom right (just below the button you've just clicked),
+            you'll see a button with a gear icon, which will open the settings
+            window, where you can customize the map to your liking.
           </p>
           <h2>Other</h2>
           <p>
