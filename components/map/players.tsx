@@ -38,7 +38,10 @@ export function Players() {
             key={player.uuid}
           >
             <Avatar>
-              <AvatarImage src={player.avatar} />
+              <AvatarImage
+                src={player.avatar}
+                draggable={false}
+              />
               <AvatarFallback>{acronym(player.name)}</AvatarFallback>
             </Avatar>
             <span>{player.name}</span>
