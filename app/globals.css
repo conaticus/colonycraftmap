@@ -129,7 +129,7 @@
   }
 
   .box {
-    @apply !rounded-md -translate-x-0.5 ring-2 ring-[#0003] bg-background;
+    @apply !rounded-md !-translate-x-0.5 !ring-2 !ring-[#0003] !bg-background !border-none !text-foreground;
   }
 
   ::-webkit-scrollbar {
