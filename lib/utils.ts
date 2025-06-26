@@ -25,3 +25,7 @@ export function acronym(str: string) {
     .join("")
     .slice(0, 3);
 }
+
+export function capitalizeWords(str: string) {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+}

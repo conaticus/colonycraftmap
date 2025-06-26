@@ -6,6 +6,7 @@ export interface CoordinateConfig {
 
 export interface Settings {
   showMarkerNames: boolean;
+  showTransportation: boolean;
 }
 
 export interface Player {
@@ -34,6 +35,22 @@ export interface ServerResponse {
 export interface VarIntResult {
   value: number;
   bytesRead: number;
+}
+
+export type TransportationModes = "minecart" | "boat";
+
+export type TransportationPointType = "station" | "junction" | "terminal";
+
+export interface Transportation {
+  name: string;
+  color: string;
+  mode: TransportationModes | TransportationModes[];
+  points: {
+    type: TransportationPointType;
+    name?: string;
+    x: number;
+    z: number;
+  }[]; // minecraft coords and not leaflet lat lng
 }
 
 export interface Colony {

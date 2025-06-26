@@ -23,6 +23,7 @@ import { Usage } from "./usage";
 import { Settings } from "./settings";
 import { Players } from "./players";
 import { InitialPositionHandler } from "./initial-position";
+import { TransportationLayer } from "./transportation";
 
 // fix for default markers in react-leaflet
 L.Icon.Default.mergeOptions({
@@ -65,6 +66,7 @@ export default function EarthMap() {
 
   const [settings, setSettings] = useLocalStorage<SettingsType>("settings", {
     showMarkerNames: true,
+    showTransportation: true,
   });
 
   const { markers, addMarker, moveMarker, renameMarker, removeMarker } =
@@ -112,6 +114,7 @@ export default function EarthMap() {
           <Players />
           <Coordinates addMarker={addMarker} />
         </Control>
+        <TransportationLayer showTransportation={settings.showTransportation} />
         <CustomTileLayer
           url={tileUrl("earth")}
           dims={dims}

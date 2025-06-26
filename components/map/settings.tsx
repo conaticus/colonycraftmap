@@ -40,9 +40,9 @@ export function Settings({
             Customize the map to your liking.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           <Setting
-            label="Show marker names"
+            label="Show Marker Names"
             description="Show the name of the marker beneath the marker."
             id="show-marker-names"
           >
@@ -51,6 +51,19 @@ export function Settings({
               checked={settings.showMarkerNames}
               onCheckedChange={(checked) =>
                 setSettings({ ...settings, showMarkerNames: checked })
+              }
+            />
+          </Setting>
+          <Setting
+            label="Show Transportation"
+            description="Show the transportation infrastructure on the map."
+            id="show-transportation"
+          >
+            <Switch
+              id="show-transportation"
+              checked={settings.showTransportation}
+              onCheckedChange={(checked) =>
+                setSettings({ ...settings, showTransportation: checked })
               }
             />
           </Setting>
