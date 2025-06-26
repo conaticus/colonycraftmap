@@ -3,7 +3,7 @@ import type { Transportation } from "@/lib/types";
 export const TRANSPORTATION: Transportation[] = [
   {
     name: "Transatlantic Highway",
-    color: "cyan",
+    color: "#00b8db",
     type: "boat",
     points: [
       {
@@ -24,7 +24,7 @@ export const TRANSPORTATION: Transportation[] = [
   },
   {
     name: "Transcontinental Railway",
-    color: "orange",
+    color: "#2b7fff",
     type: [/* "boat", */ "minecart"],
     points: [
       /* {
@@ -57,7 +57,7 @@ export const TRANSPORTATION: Transportation[] = [
   },
   {
     name: "Atlas Passage",
-    color: "gray",
+    color: "#6a7282",
     type: "tunnel",
     points: [
       {
