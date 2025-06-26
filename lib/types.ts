@@ -37,16 +37,16 @@ export interface VarIntResult {
   bytesRead: number;
 }
 
-export type TransportationModes = "minecart" | "boat";
+export type TransportationType = "minecart" | "boat" | "tunnel";
 
 export type TransportationPointType = "station" | "junction" | "terminal";
 
 export interface Transportation {
   name: string;
   color: string;
-  mode: TransportationModes | TransportationModes[];
+  type: TransportationType | TransportationType[];
   points: {
-    type: TransportationPointType;
+    type?: TransportationPointType;
     name?: string;
     x: number;
     z: number;

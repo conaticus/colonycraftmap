@@ -9,14 +9,18 @@ import { TRANSPORTATION } from "@/constants/transportation";
 
 import { TooltipRow } from "../tooltip-row";
 
-function TransportationMode({ mode }: { mode: Transportation["mode"] }) {
+function TransportationType({ type }: { type: Transportation["type"] }) {
   return (
     <TooltipRow
-      label="Mode of Transport"
+      label={
+        ["boat", "minecart"].includes(type.toString())
+          ? "Mode of Transport"
+          : "Type"
+      }
       value={
-        Array.isArray(mode)
-          ? mode.map(capitalizeWords).join(", ")
-          : capitalizeWords(mode)
+        Array.isArray(type)
+          ? type.map(capitalizeWords).join(", ")
+          : capitalizeWords(type)
       }
     />
   );
@@ -55,7 +59,7 @@ export function TransportationLayer({
                 label="Name"
                 value={transportation.name}
               />
-              <TransportationMode mode={transportation.mode} />
+              <TransportationType type={transportation.type} />
               <TooltipRow
                 label="Length"
                 value={`${transportation.points.reduce(
@@ -93,9 +97,9 @@ export function TransportationLayer({
                 >
                   <TooltipRow
                     label="Name"
-                    value={`${name} ${capitalizeWords(type)}`}
+                    value={`${name}${type ? capitalizeWords(type) : ""}`}
                   />
-                  <TransportationMode mode={transportation.mode} />
+                  <TransportationType type={transportation.type} />
                   <TooltipRow
                     label="Coordinates"
                     value={`X ${x}, Z ${z}`}

@@ -4,7 +4,7 @@ export const TRANSPORTATION: Transportation[] = [
   {
     name: "Transatlantic Highway",
     color: "cyan",
-    mode: "boat",
+    type: "boat",
     points: [
       {
         // florida
@@ -25,7 +25,7 @@ export const TRANSPORTATION: Transportation[] = [
   {
     name: "Transcontinental Railway",
     color: "orange",
-    mode: [/* "boat", */ "minecart"],
+    type: [/* "boat", */ "minecart"],
     points: [
       /* {
         // morocco
@@ -52,6 +52,25 @@ export const TRANSPORTATION: Transportation[] = [
         type: "terminal",
         x: 1050,
         z: 662,
+      },
+    ],
+  },
+  {
+    name: "Atlas Passage",
+    color: "gray",
+    type: "tunnel",
+    points: [
+      {
+        // northern morocco
+        name: "North",
+        x: -181,
+        z: -1159,
+      },
+      {
+        // northern morocco
+        name: "South",
+        x: -181,
+        z: -1022,
       },
     ],
   },
