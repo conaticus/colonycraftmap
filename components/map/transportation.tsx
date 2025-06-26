@@ -40,7 +40,7 @@ export function TransportationLayer({
           <Polyline
             pathOptions={{
               color: transportation.color,
-              opacity: 0.35,
+              opacity: 0.5,
               weight: 8,
               interactive: true,
             }}
