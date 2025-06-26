@@ -97,7 +97,7 @@ export function TransportationLayer({
                 >
                   <TooltipRow
                     label="Name"
-                    value={`${name}${type ? capitalizeWords(type) : ""}`}
+                    value={`${name}${type ? ` ${capitalizeWords(type)}` : ""}`}
                   />
                   <TransportationType type={transportation.type} />
                   <TooltipRow
