@@ -25,20 +25,29 @@ export const TRANSPORTATION: Transportation[] = [
   {
     name: "Transcontinental Railway",
     color: "#2b7fff",
-    type: [/* "boat", */ "minecart"],
+    type: ["boat", "minecart"],
     points: [
-      /* {
+      {
         // morocco
-        name: "Casablanca Central",
+        name: "Casablanca",
+        type: "junction",
         x: -436,
         z: -935,
       },
-      {
-        // central egypt
-        name: "Nilebank Station",
-        x: 1050,
+      /* {
+        // central algeria
+        name: "Saharan",
+        type: "station",
+        x: 35,
         z: -935,
       }, */
+      {
+        // central egypt
+        name: "Nilebank",
+        type: "junction",
+        x: 1050,
+        z: -935,
+      },
       {
         // northern egypt
         name: "Rosetta",
