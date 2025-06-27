@@ -16,7 +16,7 @@ export const TRANSPORTATION: Transportation[] = [
       {
         // morocco
         name: "Casablanca",
-        type: "terminal",
+        type: "junction",
         x: -444,
         z: -935,
       },
