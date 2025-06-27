@@ -13,7 +13,7 @@ function TransportationType({ type }: { type: Transportation["type"] }) {
   return (
     <TooltipRow
       label={
-        ["boat", "minecart"].includes(type.toString())
+        ["boat", "minecart"].join().includes(type.toString())
           ? "Mode of Transport"
           : "Type"
       }
