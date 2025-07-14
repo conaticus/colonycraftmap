@@ -12,6 +12,7 @@ enum ActionType {
   ADD = "ADD",
   UPDATE = "UPDATE",
   REMOVE = "REMOVE",
+  REMOVE_ALL = "REMOVE_ALL",
   RENAME = "RENAME",
 }
 
@@ -40,12 +41,18 @@ interface RemoveAction {
   payload: { id: number };
 }
 
+interface RemoveAllAction {
+  type: ActionType.REMOVE_ALL;
+  payload: undefined;
+}
+
 type Action =
   | LoadAction
   | AddAction
   | UpdateAction
   | RenameAction
-  | RemoveAction;
+  | RemoveAction
+  | RemoveAllAction;
 
 function initMarkers(): MarkerData[] {
   const stored = localStorage.getItem(MAP_STORAGE_KEY);
@@ -91,6 +98,9 @@ function reducer(state: MarkerData[], action: Action): MarkerData[] {
     }
     case ActionType.REMOVE: {
       return state.filter((m) => m.id !== action.payload.id);
+    }
+    case ActionType.REMOVE_ALL: {
+      return [];
     }
     default: {
       return state;
@@ -155,5 +165,18 @@ export function useMarkers() {
     toast.success("Deleted marker");
   }, []);
 
-  return { markers, addMarker, moveMarker, renameMarker, removeMarker };
+  const removeMarkers = useCallback(() => {
+    dispatch({ type: ActionType.REMOVE_ALL, payload: undefined });
+
+    toast.success("Deleted every marker");
+  }, []);
+
+  return {
+    markers,
+    addMarker,
+    moveMarker,
+    renameMarker,
+    removeMarker,
+    removeMarkers,
+  };
 }
