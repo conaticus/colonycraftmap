@@ -12,6 +12,35 @@ export function useLocalStorage<T>(
     initialValueRef.current = initialValue;
   }, [initialValue]);
 
+  // Helper function to merge missing keys from initialValue into stored object
+  const mergeWithInitialValue = (storedData: T, initial: T): T => {
+    // Only merge if both are objects and not null/array
+    if (
+      typeof storedData === "object" &&
+      typeof initial === "object" &&
+      storedData !== null &&
+      initial !== null &&
+      !Array.isArray(storedData) &&
+      !Array.isArray(initial)
+    ) {
+      const merged = { ...storedData } as Record<string, unknown>;
+      const initialObj = initial as Record<string, unknown>;
+
+      // Add missing keys from initialValue
+      for (const key in initialObj) {
+        if (!(key in merged)) {
+          merged[key] = initialObj[key];
+        }
+      }
+
+      return merged as T;
+    }
+
+    // Return stored data as-is if not objects
+    return storedData;
+  };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: not required
   useEffect(() => {
     // Function to read the value from local storage
     const readValue = () => {
@@ -20,7 +49,12 @@ export function useLocalStorage<T>(
       }
       try {
         const item = window.localStorage.getItem(key);
-        return item ? JSON.parse(item) : initialValueRef.current;
+        if (item) {
+          const parsedItem = JSON.parse(item);
+          // Merge missing keys from initialValue
+          return mergeWithInitialValue(parsedItem, initialValueRef.current);
+        }
+        return initialValueRef.current;
       } catch (error) {
         console.error(`Error reading localStorage key "${key}":`, error);
         return initialValueRef.current;
@@ -28,7 +62,20 @@ export function useLocalStorage<T>(
     };
 
     // Set the initial stored value when the component mounts
-    setStoredValue(readValue());
+    const mergedValue = readValue();
+    setStoredValue(mergedValue);
+
+    // Update localStorage with merged value if it was modified
+    if (typeof window !== "undefined") {
+      const item = window.localStorage.getItem(key);
+      if (item) {
+        const parsedItem = JSON.parse(item);
+        // Only update localStorage if the merge actually added missing keys
+        if (JSON.stringify(parsedItem) !== JSON.stringify(mergedValue)) {
+          window.localStorage.setItem(key, JSON.stringify(mergedValue));
+        }
+      }
+    }
 
     // Event listener for storage changes
     const handleStorageChange = (event: StorageEvent) => {
