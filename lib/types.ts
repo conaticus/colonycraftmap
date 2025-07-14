@@ -7,6 +7,7 @@ export interface CoordinateConfig {
 export interface Settings {
   showMarkerNames: boolean;
   showTransportation: boolean;
+  showColonies: boolean;
 }
 
 export interface Player {
@@ -55,5 +56,19 @@ export interface Transportation {
 
 export interface Colony {
   name: string;
+  leaderId: string;
+  /** https://javadoc.io/doc/net.kyori/adventure-api/latest/net/kyori/adventure/text/format/NamedTextColor.html */
+  colour: string;
   chunks: { x: number; z: number }[];
+}
+
+export interface ProcessedColony extends Colony {
+  leafletCoords: [number, number][];
+  size: string;
+  area: number;
+  leader: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
 }
