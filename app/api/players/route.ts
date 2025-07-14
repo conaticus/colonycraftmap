@@ -7,6 +7,8 @@ import type {
   VarIntResult,
 } from "@/lib/types";
 
+import { PLAYER_AVATAR_URL } from "@/constants/player";
+
 function writeVarInt(value: number): Buffer {
   const bytes: number[] = [];
   let remainingValue = value;
@@ -139,7 +141,7 @@ function extractPlayerInfo(serverResponse: ServerResponse): PlayerInfo {
       players.push({
         name: player.name,
         uuid: player.id,
-        avatar: `https://minotar.net/helm/${player.id.replace(/-/g, "")}/16.png`,
+        avatar: PLAYER_AVATAR_URL(player.id),
       });
     }
   }
