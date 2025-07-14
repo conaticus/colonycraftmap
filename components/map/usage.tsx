@@ -103,6 +103,11 @@ export function Usage() {
             </Link>
             .
           </p>
+          <h2>Colonies</h2>
+          <p>
+            By default, you'll see colored rectangles representing colonies on
+            the map. Hovering over a colony will show information about it.
+          </p>
           <h2>Settings</h2>
           <p>
             In the bottom right (just below the button you've just clicked),
