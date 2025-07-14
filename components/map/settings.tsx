@@ -1,4 +1,4 @@
-import { SettingsIcon } from "lucide-react";
+import { SettingsIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
 import type { Settings as SettingsType } from "@/lib/types";
@@ -16,11 +16,15 @@ import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
 
 export function Settings({
+  markersLength,
   settings,
   setSettings,
+  removeMarkers,
 }: {
+  markersLength: number;
   settings: SettingsType;
   setSettings: (settings: SettingsType) => void;
+  removeMarkers: () => void;
 }) {
   const [isOpen, setOpen] = useState(false);
 
@@ -55,6 +59,19 @@ export function Settings({
             />
           </Setting>
           <Setting
+            label="Show Colonies"
+            description="Show the colonies on the map."
+            id="show-colonies"
+          >
+            <Switch
+              id="show-colonies"
+              checked={settings.showColonies}
+              onCheckedChange={(checked) =>
+                setSettings({ ...settings, showColonies: checked })
+              }
+            />
+          </Setting>
+          <Setting
             label="Show Transportation"
             description="Show the transportation infrastructure on the map."
             id="show-transportation"
@@ -66,6 +83,22 @@ export function Settings({
                 setSettings({ ...settings, showTransportation: checked })
               }
             />
+          </Setting>
+          <Setting
+            label="Remove markers"
+            description="Delete every single marker on the map that you created."
+            id="remove-markers"
+          >
+            <Button
+              className="size-7"
+              variant="destructive"
+              size="xs"
+              id="remove-markers"
+              onClick={removeMarkers}
+              disabled={markersLength === 0}
+            >
+              <Trash2Icon />
+            </Button>
           </Setting>
         </div>
         <DialogFooter>
