@@ -15,7 +15,7 @@ export function tileUrl(type: string) {
 }
 
 export async function fetcher(url: string) {
-  return fetch(url).then((res) => res.json());
+  return await fetch(url).then((res) => res.json());
 }
 
 export function acronym(str: string) {
