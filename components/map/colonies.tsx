@@ -4,7 +4,9 @@ import { FeatureGroup, Tooltip, Polygon } from "react-leaflet";
 import useSWR from "swr";
 import { memo, useState, useEffect } from "react";
 
-import type { Colony, ProcessedColony } from "@/lib/types";
+import type { ColoniesEndpointResponse } from "@/app/api/colonies/route";
+
+import type { ProcessedColony } from "@/lib/types";
 import { convertMinecraftToLeaflet } from "@/lib/map";
 import { acronym, fetcher } from "@/lib/utils";
 
@@ -102,22 +104,24 @@ export const ColoniesLayer = memo(
   }: {
     showColonies: boolean;
   }) => {
-    const {
-      data: colonies,
-      error,
-      isLoading,
-    } = useSWR<Colony[]>(COLONIES_API_URL, fetcher, {
-      fallbackData: [],
-      errorRetryCount: 3,
-      isPaused: () => !showColonies,
-    });
+    const { data, error, isLoading } = useSWR<ColoniesEndpointResponse>(
+      COLONIES_API_URL,
+      fetcher,
+      {
+        fallbackData: { success: false, data: [] } as ColoniesEndpointResponse,
+        errorRetryCount: 3,
+        isPaused: () => !showColonies,
+      }
+    );
 
     const [processedColonies, setProcessedColonies] = useState<
       ProcessedColony[]
     >([]);
 
     useEffect(() => {
-      if (!colonies) return;
+      if (!data || !data.success) return;
+
+      const { data: colonies } = data;
 
       const getColonySize = (chunkCount: number): string => {
         if (chunkCount <= 3) return "Tiny";
@@ -173,16 +177,14 @@ export const ColoniesLayer = memo(
       };
 
       processColonies();
-    }, [colonies]);
+    }, [data]);
 
     if (error) {
-      console.log(colonies);
-
       console.error(error);
       return <div>Failed to load colonies</div>;
     }
 
-    if (isLoading || !colonies || !showColonies) return null;
+    if (isLoading || !data || !showColonies) return null;
 
     return (
       <FeatureGroup>
