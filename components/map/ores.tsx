@@ -16,7 +16,7 @@ export function OreLayers({
   const initialState = useMemo(
     () =>
       ORES.reduce(
-        (acc, ore) => Object.assign(acc, { [ore.id]: ore.id === "all_ores" }),
+        (acc, ore) => Object.assign(acc, { [ore.id]: false }),
         {} as Record<string, boolean>
       ),
     []
