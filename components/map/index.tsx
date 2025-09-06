@@ -126,17 +126,14 @@ export default function EarthMap() {
         </Control>
         <ColoniesLayer showColonies={settings.showColonies} />
         <TransportationLayer showTransportation={settings.showTransportation} />
-        <CustomTileLayer
-          url={tileUrl("earth")}
-          dims={dims}
-          withAttribution
-        />
+        <CustomTileLayer url={tileUrl("earth")} dims={dims} withAttribution />
         <OreLayers dims={dims} />
         <InitialPositionHandler />
         <MapClickHandler onAddMarker={addMarker} />
         <MarkerLayer
           showMarkerNames={settings.showMarkerNames}
           markers={markers}
+          addMarker={addMarker}
           removeMarker={removeMarker}
           moveMarker={moveMarker}
           renameMarker={renameMarker}

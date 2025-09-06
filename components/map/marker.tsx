@@ -22,7 +22,9 @@ export interface MarkerData {
 export const MapClickHandler = memo(
   ({
     onAddMarker,
-  }: { onAddMarker: (marker: MarkerData["leaflet"]) => void }) => {
+  }: {
+    onAddMarker: (marker: MarkerData["leaflet"]) => void;
+  }) => {
     useMapEvent("click", (e: LeafletMouseEvent) => {
       const { lat, lng } = e.latlng;
 
@@ -88,11 +90,7 @@ function MarkerPopup({
             <InfoIcon className="size-3.5" />
           </span>
         </span>
-        <InlineEdit
-          id={marker.id}
-          name={marker.name}
-          onRename={onRename}
-        />
+        <InlineEdit id={marker.id} name={marker.name} onRename={onRename} />
       </div>
       <div className="flex justify-between items-center gap-1 tabular-nums">
         <span className="w-1/3 font-medium">Coordinates</span>
@@ -169,11 +167,7 @@ const MapMarker = ({
       eventHandlers={{ dragend: onDragEnd }}
       draggable
     >
-      <MarkerPopup
-        marker={marker}
-        onRemove={onRemove}
-        onRename={onRename}
-      />
+      <MarkerPopup marker={marker} onRemove={onRemove} onRename={onRename} />
       {showMarkerNames && (
         <Tooltip
           content={marker.name}
@@ -190,17 +184,19 @@ const MapMarker = ({
 export function MarkerLayer({
   showMarkerNames,
   markers,
+  addMarker,
   removeMarker,
   moveMarker,
   renameMarker,
 }: {
   showMarkerNames: boolean;
   markers: MarkerData[];
+  addMarker: any;
   removeMarker: (id: number) => void;
   moveMarker: (id: number, lat: number, lng: number) => void;
   renameMarker: (id: number, name: string) => void;
 }) {
-  useUrlCoordinates();
+  useUrlCoordinates(addMarker);
 
   const handleMove = useCallback(
     (id: number, lat: number, lng: number) => {

@@ -1,5 +1,5 @@
 import { LayerGroup, LayersControl } from "react-leaflet";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 
 import { tileUrl } from "@/lib/utils";
 import type { calculateMapDimensions } from "@/lib/map";
@@ -13,6 +13,8 @@ export function OreLayers({
 }: {
   dims: ReturnType<typeof calculateMapDimensions>;
 }) {
+  const [mounted, setMounted] = useState(false);
+
   const initialState = useMemo(
     () =>
       ORES.reduce(
@@ -34,6 +36,12 @@ export function OreLayers({
     },
     [initialState]
   );
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <></>;
 
   return (
     <LayersControl position="topright">

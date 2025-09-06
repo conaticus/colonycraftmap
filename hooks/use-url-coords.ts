@@ -5,13 +5,10 @@ import { useMap } from "react-leaflet";
 import { isWithinMapBounds, removeUrlParams } from "@/components/map";
 
 import { convertMinecraftToLeaflet } from "@/lib/map";
-import { useMarkers } from "./use-markers";
 
-export function useUrlCoordinates() {
+export function useUrlCoordinates(addMarker: any) {
   const searchParams = useSearchParams();
   const map = useMap();
-
-  const { addMarker } = useMarkers();
 
   useEffect(() => {
     const x = searchParams.get("x");
@@ -37,5 +34,5 @@ export function useUrlCoordinates() {
         removeUrlParams(searchParams);
       }
     }
-  }, [searchParams, map.flyTo]);
+  }, [searchParams]);
 }
