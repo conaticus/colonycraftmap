@@ -1,21 +1,8 @@
-import type { Colony } from "@/lib/types";
-
-export type ColoniesEndpointResponse =
-  | {
-      success: true;
-      data: Colony[];
-    }
-  | {
-      success: false;
-      message: string;
-      data: [];
-    };
+import type { ColoniesEndpointResponse, Colony } from "@/lib/types";
 
 export async function GET() {
   try {
-    const response = await fetch(
-      "https://wiki.colonycraft.org/api/colony-chunks"
-    );
+    const response = await fetch("http://localhost:3000/api/colonies");
 
     const data = await response.json();
 

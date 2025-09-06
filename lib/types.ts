@@ -72,3 +72,14 @@ export interface ProcessedColony extends Colony {
     avatar: string;
   };
 }
+
+export type ColoniesEndpointResponse =
+  | {
+      success: true;
+      data: Colony[];
+    }
+  | {
+      success: false;
+      message: string;
+      data: [];
+    };

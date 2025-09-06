@@ -4,9 +4,7 @@ import { FeatureGroup, Tooltip, Polygon } from "react-leaflet";
 import useSWR from "swr";
 import { memo, useState, useEffect } from "react";
 
-import type { ColoniesEndpointResponse } from "@/app/api/colonies/route";
-
-import type { ProcessedColony } from "@/lib/types";
+import type { ColoniesEndpointResponse, ProcessedColony } from "@/lib/types";
 import { convertMinecraftToLeaflet } from "@/lib/map";
 import { acronym, fetcher } from "@/lib/utils";
 
@@ -16,10 +14,9 @@ import { PLAYER_AVATAR_URL } from "@/constants/player";
 import { TooltipRow } from "../tooltip-row";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-const COLONIES_API_URL = new URL(
-  "/api/colonies",
-  process.env.NEXT_PUBLIC_URL
-).toString();
+export function getColoniesUrl() {
+  return "/api/colonies";
+}
 
 const CHUNK_SIZE = 16;
 
@@ -99,13 +96,9 @@ function createColonyPolygon(
 }
 
 export const ColoniesLayer = memo(
-  ({
-    showColonies,
-  }: {
-    showColonies: boolean;
-  }) => {
+  ({ showColonies }: { showColonies: boolean }) => {
     const { data, error, isLoading } = useSWR<ColoniesEndpointResponse>(
-      COLONIES_API_URL,
+      getColoniesUrl(),
       fetcher,
       {
         fallbackData: { success: false, data: [] } as ColoniesEndpointResponse,
@@ -206,10 +199,7 @@ export const ColoniesLayer = memo(
               permanent={false}
               sticky
             >
-              <TooltipRow
-                label="Name"
-                value={colony.name}
-              />
+              <TooltipRow label="Name" value={colony.name} />
               <TooltipRow
                 label="Leader"
                 value={
@@ -227,10 +217,7 @@ export const ColoniesLayer = memo(
                   </>
                 }
               />
-              <TooltipRow
-                label="Chunks"
-                value={String(colony.chunks.length)}
-              />
+              <TooltipRow label="Chunks" value={String(colony.chunks.length)} />
               <TooltipRow
                 label="Area"
                 value={`${colony.area} m² (${colony.size})`}
