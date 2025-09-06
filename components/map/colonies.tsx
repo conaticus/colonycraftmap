@@ -199,7 +199,10 @@ export const ColoniesLayer = memo(
               permanent={false}
               sticky
             >
-              <TooltipRow label="Name" value={colony.name} />
+              <TooltipRow
+                label="Name"
+                value={colony.name}
+              />
               <TooltipRow
                 label="Leader"
                 value={
@@ -217,7 +220,10 @@ export const ColoniesLayer = memo(
                   </>
                 }
               />
-              <TooltipRow label="Chunks" value={String(colony.chunks.length)} />
+              <TooltipRow
+                label="Chunks"
+                value={String(colony.chunks.length)}
+              />
               <TooltipRow
                 label="Area"
                 value={`${colony.area} m² (${colony.size})`}

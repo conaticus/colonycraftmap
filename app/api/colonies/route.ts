@@ -1,4 +1,4 @@
-import type { ColoniesEndpointResponse, Colony } from "@/lib/types";
+import type { ColoniesEndpointResponse } from "@/lib/types";
 
 export async function GET() {
   try {
