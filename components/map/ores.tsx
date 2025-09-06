@@ -16,7 +16,7 @@ export function OreLayers({
   const initialState = useMemo(
     () =>
       ORES.reduce(
-        (acc, ore) => Object.assign(acc, { [ore.id]: false }),
+        (acc, ore) => Object.assign(acc, { [ore.id]: ore.id === "all_ores" ),
         {} as Record<string, boolean>
       ),
     []
@@ -50,10 +50,7 @@ export function OreLayers({
           key={ore.id}
         >
           <LayerGroup eventHandlers={{ add: () => handleLayerToggle(ore.id) }}>
-            <CustomTileLayer
-              url={tileUrl(ore.id)}
-              dims={dims}
-            />
+            <CustomTileLayer url={tileUrl(ore.id)} dims={dims} />
           </LayerGroup>
         </LayersControl.Overlay>
       ))}
