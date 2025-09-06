@@ -58,7 +58,10 @@ export function OreLayers({
           key={ore.id}
         >
           <LayerGroup eventHandlers={{ add: () => handleLayerToggle(ore.id) }}>
-            <CustomTileLayer url={tileUrl(ore.id)} dims={dims} />
+            <CustomTileLayer
+              url={tileUrl(ore.id)}
+              dims={dims}
+            />
           </LayerGroup>
         </LayersControl.Overlay>
       ))}

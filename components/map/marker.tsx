@@ -90,7 +90,11 @@ function MarkerPopup({
             <InfoIcon className="size-3.5" />
           </span>
         </span>
-        <InlineEdit id={marker.id} name={marker.name} onRename={onRename} />
+        <InlineEdit
+          id={marker.id}
+          name={marker.name}
+          onRename={onRename}
+        />
       </div>
       <div className="flex justify-between items-center gap-1 tabular-nums">
         <span className="w-1/3 font-medium">Coordinates</span>
@@ -167,7 +171,11 @@ const MapMarker = ({
       eventHandlers={{ dragend: onDragEnd }}
       draggable
     >
-      <MarkerPopup marker={marker} onRemove={onRemove} onRename={onRename} />
+      <MarkerPopup
+        marker={marker}
+        onRemove={onRemove}
+        onRename={onRename}
+      />
       {showMarkerNames && (
         <Tooltip
           content={marker.name}
